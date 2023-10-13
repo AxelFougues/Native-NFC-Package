@@ -7,10 +7,12 @@ using System.Text;
 using System.Text.RegularExpressions;
 using UnityEngine;
 
-public class NFCUtils : MonoBehaviour{
+namespace AzApps.NativeNFC {
 
-    #region LOOKUP_TABLES
-    public static Dictionary<string, string> NTAG_VERSION_DATA_IC = new Dictionary<string, string>() {
+    public class NFCUtils : MonoBehaviour {
+
+        #region LOOKUP_TABLES
+        public static Dictionary<string, string> NTAG_VERSION_DATA_IC = new Dictionary<string, string>() {
 
         { "0004040102000B03", "NTAG 210u NT2L1001" },
         { "0004040202000B03", "NTAG 210u NT2H1001" },
@@ -64,7 +66,7 @@ public class NFCUtils : MonoBehaviour{
 
     };
 
-    public static Dictionary<string, string> manufacturers = new Dictionary<string, string>() {
+        public static Dictionary<string, string> manufacturers = new Dictionary<string, string>() {
         {"01", "Motorola (UK)"},
         {"02", "STMicroelectronics SA (FR)"},
         {"03", "Hitachi Ltd (JP)"},
@@ -176,8 +178,8 @@ public class NFCUtils : MonoBehaviour{
         {"7E", "Holtek (TW)"}
     };
 
-    public enum WellKnownRecordType { None, Text, URI, Smart_Poster, Alternative_Carrier, Handover_Carrier, Handover_Request, Handover_Select }
-    public static Dictionary<WellKnownRecordType, byte[]> WELL_KNOWN_RECORD_TYPE_VALUES = new Dictionary<WellKnownRecordType, byte[]> {
+        public enum WellKnownRecordType { None, Text, URI, Smart_Poster, Alternative_Carrier, Handover_Carrier, Handover_Request, Handover_Select }
+        public static Dictionary<WellKnownRecordType, byte[]> WELL_KNOWN_RECORD_TYPE_VALUES = new Dictionary<WellKnownRecordType, byte[]> {
         { WellKnownRecordType.None, null },
         { WellKnownRecordType.Text, new byte[]{ 0x54 } },
         { WellKnownRecordType.URI, new byte[]{ 0x55 } },
@@ -189,7 +191,7 @@ public class NFCUtils : MonoBehaviour{
 
     };
 
-    public static Dictionary<byte, string> URI_IDENTIFIER_CODES = new Dictionary<byte, string> {
+        public static Dictionary<byte, string> URI_IDENTIFIER_CODES = new Dictionary<byte, string> {
         { 0x00, "" },
         { 0x01, "http://www." },
         { 0x02, "https://www." },
@@ -229,68 +231,69 @@ public class NFCUtils : MonoBehaviour{
     };
 
 
-    public enum ExternalRecordType { None, Android_Package }
-    public static Dictionary<ExternalRecordType, byte[]> EXTERNAL_RECORD_TYPE_VALUES = new Dictionary<ExternalRecordType, byte[]> {
+        public enum ExternalRecordType { None, Android_Package }
+        public static Dictionary<ExternalRecordType, byte[]> EXTERNAL_RECORD_TYPE_VALUES = new Dictionary<ExternalRecordType, byte[]> {
         { ExternalRecordType.None, null },
         { ExternalRecordType.Android_Package, new byte[]{ 0x61, 0x6e, 0x64, 0x72, 0x6f, 0x69, 0x64, 0x2e, 0x63, 0x6f, 0x6d, 0x3a, 0x70, 0x6b, 0x67 } }
 
     };
 
-    #endregion
+        #endregion
 
-    public static string idToReadableManufacturer(string input) {
-        if (string.IsNullOrEmpty(input)) return "N/A";
-        if (input.Length == 2 && manufacturers.ContainsKey(input.ToUpper())) return input.ToUpper() + "-" + manufacturers[input.ToUpper()];
-        return input;
-    }
-
-    public static string bytesToText(byte[] bytes) {
-        string s = Regex.Replace(Encoding.UTF8.GetString(bytes), @"[^\u0020-\u007E]", ".");
-        //s = Regex.Replace(s, @"[\u0020-\u007E]", ".");
-        return s;
-    }
-
-    public static string bytesToHexString(byte[] bytes) {
-        StringBuilder hex = new StringBuilder(bytes.Length * 2);
-        foreach (byte b in bytes)
-            hex.AppendFormat(" {0:x2}", b);
-        return hex.ToString();
-    }
-
-    public static string byteToHexString(byte b) {
-        StringBuilder hex = new StringBuilder(2);
-        hex.AppendFormat(" {0:x2}", b);
-        return hex.ToString();
-    }
-
-    public static string hexStringToText(string hexString) {
-        var bytes = new byte[hexString.Length / 2];
-        for (var i = 0; i < bytes.Length; i++) {
-            bytes[i] = Convert.ToByte(hexString.Substring(i * 2, 2), 16);
+        public static string idToReadableManufacturer(string input) {
+            if (string.IsNullOrEmpty(input)) return "N/A";
+            if (input.Length == 2 && manufacturers.ContainsKey(input.ToUpper())) return input.ToUpper() + "-" + manufacturers[input.ToUpper()];
+            return input;
         }
 
-        return Regex.Replace(Encoding.UTF8.GetString(bytes), @"[^\u0020-\u007E]+", "_");
-    }
+        public static string bytesToText(byte[] bytes) {
+            string s = Regex.Replace(Encoding.UTF8.GetString(bytes), @"[^\u0020-\u007E]", ".");
+            //s = Regex.Replace(s, @"[\u0020-\u007E]", ".");
+            return s;
+        }
 
-    public static byte[] hexStringToBytes(string hexString) {
-        return BigInteger.Parse(hexString, System.Globalization.NumberStyles.HexNumber).ToByteArray().Reverse().ToArray();
-    }
+        public static string bytesToHexString(byte[] bytes) {
+            StringBuilder hex = new StringBuilder(bytes.Length * 2);
+            foreach (byte b in bytes)
+                hex.AppendFormat(" {0:x2}", b);
+            return hex.ToString();
+        }
 
-    public static int[] hexStringToInts(string hexString) {
-        return bytesToInts(hexStringToBytes(hexString));
-    }
+        public static string byteToHexString(byte b) {
+            StringBuilder hex = new StringBuilder(2);
+            hex.AppendFormat(" {0:x2}", b);
+            return hex.ToString();
+        }
 
-    public static int[] bytesToInts(byte[] bytes) {
-        int[] ints = new int[bytes.Length];
-        for (int i = 0; i < bytes.Length; i++) ints[i] = bytes[i];
-        return ints;
-    }
+        public static string hexStringToText(string hexString) {
+            var bytes = new byte[hexString.Length / 2];
+            for (var i = 0; i < bytes.Length; i++) {
+                bytes[i] = Convert.ToByte(hexString.Substring(i * 2, 2), 16);
+            }
 
-    public static byte[] intsToBytes(int[] ints) {
-        byte[] bytes = new byte[ints.Length];
-        for (int i = 0; i < ints.Length; i++) bytes[i] = (byte)ints[i];
-        return bytes;
-    }
-    
+            return Regex.Replace(Encoding.UTF8.GetString(bytes), @"[^\u0020-\u007E]+", "_");
+        }
 
+        public static byte[] hexStringToBytes(string hexString) {
+            return BigInteger.Parse(hexString, System.Globalization.NumberStyles.HexNumber).ToByteArray().Reverse().ToArray();
+        }
+
+        public static int[] hexStringToInts(string hexString) {
+            return bytesToInts(hexStringToBytes(hexString));
+        }
+
+        public static int[] bytesToInts(byte[] bytes) {
+            int[] ints = new int[bytes.Length];
+            for (int i = 0; i < bytes.Length; i++) ints[i] = bytes[i];
+            return ints;
+        }
+
+        public static byte[] intsToBytes(int[] ints) {
+            byte[] bytes = new byte[ints.Length];
+            for (int i = 0; i < ints.Length; i++) bytes[i] = (byte)ints[i];
+            return bytes;
+        }
+
+
+    }
 }
