@@ -23,6 +23,8 @@ namespace AzApps.NativeNFC {
             TYPE_UNKNOWN, TYPE_BUILTIN_EARPIECE, TYPE_BUILTIN_SPEAKER, TYPE_WIRED_HEADSET, TYPE_WIRED_HEADPHONES, TYPE_LINE_ANALOG, TYPE_LINE_DIGITAL, TYPE_BLUETOOTH_SCO, TYPE_BLUETOOTH_A2DP, TYPE_HDMI, TYPE_HDMI_ARC, TYPE_USB_DEVICE, TYPE_USB_ACCESSORY, TYPE_DOCK, TYPE_FM, TYPE_BUILTIN_MIC, TYPE_FM_TUNER, TYPE_TV_TUNER, TYPE_TELEPHONY, TYPE_AUX_LINE, TYPE_IP, TYPE_BUS, TYPE_USB_HEADSET, TYPE_HEARING_AID, TYPE_BUILTIN_SPEAKER_SAFE, TYPE_REMOTE_SUBMIX, TYPE_BLE_HEADSET, TYPE_BLE_SPEAKER, TYPE_ECHO_REFERENCE, TYPE_HDMI_EARC, TYPE_BLE_BROADCAST
         }
 
+        public bool autoRetrieveInstalledApps = true;
+
         public static Action<string> onNFCScanFail;
         public static Action<string> onNFCDebugLog;
         public static Action<string> onNFCDebugError;
@@ -34,9 +36,13 @@ namespace AzApps.NativeNFC {
         static AndroidJavaClass unityClass;
         static AndroidJavaObject unityActivity;
 
+       
+
         public static InstalledAppsInfo installedApps = null;
 
         private void Awake() {
+            gameObject.name = "NativeNFC";
+
             if (Application.platform == RuntimePlatform.Android) {
                 unityClass = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
                 unityActivity = unityClass.GetStatic<AndroidJavaObject>("currentActivity");
@@ -45,12 +51,13 @@ namespace AzApps.NativeNFC {
                 }
             }
 
-            getDeviceInstalledApps();
+            if(autoRetrieveInstalledApps) refreshDeviceInstalledApps();
         }
 
         public static bool isAvailable() { return available; }
 
         public static void startScan(AndroidActionType type) {
+            Debug.Log("Start scan " + type + " " + available);
             if (!available) return;
             unityActivity.Call("toggleNFCIntentCapture", true, type.ToString());
         }
@@ -105,7 +112,7 @@ namespace AzApps.NativeNFC {
             return false;
         }
 
-        public static bool getDeviceInstalledApps() {
+        public static bool refreshDeviceInstalledApps() {
             AndroidJavaClass unityClass;
             AndroidJavaObject unityActivity;
             if (Application.platform == RuntimePlatform.Android) {

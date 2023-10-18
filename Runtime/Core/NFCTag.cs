@@ -62,14 +62,6 @@ namespace AzApps.NativeNFC {
             }
             return result;
         }
-
-        public string ToColoredString() {
-            string result = "Sector " + sector + ":" + content.Count + " Blocks\n";
-            foreach (RawBlockContent rbc in content) {
-                result += rbc.ToColoredString() + "\n";
-            }
-            return result;
-        }
     }
 
     [Serializable]
@@ -89,20 +81,6 @@ namespace AzApps.NativeNFC {
             else if (blockContent == null || blockContent.Length == 0) return "Block [" + hexIndex + "] " + "N/A";
             else return "Block [" + hexIndex + "] " + BitConverter.ToString(blockContent) + " |" + NFCUtils.bytesToText(blockContent) + "|";
         }
-
-        public string ToColoredString() {
-
-            if (blockContent == null || byteTypes == null) return ToString();
-
-            string result = "Block [" + $"0x{blockIndex:X4}" + "] ";
-            for (int i = 0; i < blockContent.Length; i++) {
-                //if (ColorManager.instance.theme.blockColorizationScheme.Count > byteTypes[i]) result += "<color=#" + ColorUtility.ToHtmlStringRGB(ColorManager.instance.theme.blockColorizationScheme[byteTypes[i]]) + ">" + NFCUtils.byteToHexString(blockContent[i]) + "</color> ";
-                //else result += "<color=#" + ColorUtility.ToHtmlStringRGB(Color.white) + ">" + NFCUtils.byteToHexString(blockContent[i]) + "</color> ";
-            }
-            result += " |" + NFCUtils.bytesToText(blockContent) + "|";
-            return result;
-        }
-
 
     }
 }
