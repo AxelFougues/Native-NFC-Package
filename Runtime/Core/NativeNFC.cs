@@ -1,7 +1,9 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using UnityEngine;
+using UnityEngine.Networking;
 
 namespace AzApps.NativeNFC {
 
@@ -24,6 +26,9 @@ namespace AzApps.NativeNFC {
         }
 
         public bool autoRetrieveInstalledApps = true;
+        public string vivokeyApiKey = "";
+
+        static string VIVOKEY_URL = "https://auth.vivokey.com/";
 
         public static Action<string> onNFCScanFail;
         public static Action<string> onNFCDebugLog;
@@ -56,6 +61,8 @@ namespace AzApps.NativeNFC {
 
         public static bool isAvailable() { return available; }
 
+        #region SCAN
+
         public static void startScan(AndroidActionType type) {
             Debug.Log("Start scan " + type + " " + available);
             if (!available) return;
@@ -71,6 +78,9 @@ namespace AzApps.NativeNFC {
             if (!available) return;
             unityActivity.Call("toggleNFCIntentCapture", false, AndroidActionType.NONE.ToString());
         }
+
+        #endregion
+        #region ANDROID_UTILITIES
 
         public static DeviceTheme getDeviceTheme() {
             AndroidJavaClass unityClass;
@@ -130,6 +140,71 @@ namespace AzApps.NativeNFC {
             return false;
         }
 
+        #endregion
+        #region VIVOKEY
+
+        IEnumerator vivokeyChallenge(string scheme, string uid = null, string message = null) {
+            WWWForm form = new WWWForm();
+            form.headers.Add("Content-Type", "application/json");
+            form.headers.Add("X-API-VIVOKEY", vivokeyApiKey);
+            form.AddField("scheme", scheme);
+            if (!string.IsNullOrWhiteSpace(uid)) form.AddField("uid", uid);
+            if (!string.IsNullOrWhiteSpace(message)) form.AddField("message", message);
+
+            using (UnityWebRequest www = UnityWebRequest.Post(VIVOKEY_URL + "challenge", form)) {
+                yield return www.SendWebRequest();
+
+                if (www.result != UnityWebRequest.Result.Success) {
+                    Debug.Log("Vivokey challenge failed: " + www.error + " " + www.responseCode);
+                } else {
+                    Debug.Log("Form upload complete!");
+                    Debug.Log("payload: " + www.GetResponseHeader("payload"));
+                    Debug.Log("token: " + www.GetResponseHeader("token"));
+                }
+            }
+        }
+
+        IEnumerator vivokeySession(string uid, string response, string token, string cld = null) {
+            WWWForm form = new WWWForm();
+            form.headers.Add("Content-Type", "application/json");
+            form.headers.Add("X-API-VIVOKEY", vivokeyApiKey);
+            form.AddField("uid", uid);
+            form.AddField("response", response);
+            form.AddField("token", token);
+            if (!string.IsNullOrWhiteSpace(cld)) form.AddField("cld", cld);
+
+            using (UnityWebRequest www = UnityWebRequest.Post(VIVOKEY_URL + "session", form)) {
+                yield return www.SendWebRequest();
+
+                if (www.result != UnityWebRequest.Result.Success) {
+                    Debug.Log("Vivokey session failed: " + www.error + " " + www.responseCode);
+                } else {
+                    Debug.Log("Form upload complete!");
+                    Debug.Log("token: " + www.GetResponseHeader("token"));
+                }
+            }
+        }
+
+        IEnumerator vivokeyValidate(string signature) {
+            WWWForm form = new WWWForm();
+            form.headers.Add("Content-Type", "application/json");
+            form.headers.Add("X-API-VIVOKEY", vivokeyApiKey);
+            form.AddField("signature", signature);
+
+            using (UnityWebRequest www = UnityWebRequest.Post(VIVOKEY_URL + "validate", form)) {
+                yield return www.SendWebRequest();
+
+                if (www.result != UnityWebRequest.Result.Success) {
+                    Debug.Log("Vivokey validate failed: " + www.error + " " + www.responseCode);
+                } else {
+                    Debug.Log("Form upload complete!");
+                    Debug.Log("result: " + www.GetResponseHeader("result"));
+                    Debug.Log("token: " + www.GetResponseHeader("token"));
+                }
+            }
+        }
+
+        #endregion
         #region FROM_UNITY
 
         void messageFromAndroid(string message) {
