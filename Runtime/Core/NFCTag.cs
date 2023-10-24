@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using static AzApps.NativeNFC.NFCUtils;
 
 namespace AzApps.NativeNFC {
 
@@ -9,7 +10,7 @@ namespace AzApps.NativeNFC {
 
 
 
-        public enum NFCTechnology {
+        public enum NFC_Technology {
             UNKNOWN,
             ISO_DEP,
             MIFARE_CLASSIC,
@@ -31,8 +32,9 @@ namespace AzApps.NativeNFC {
         public byte[] atqa;
         public short sak;
         public string emulated;
-        public List<NFCTechnology> technologies = new List<NFCTechnology>();
-        public string manufacturer = null;
+        public List<NFC_Technology> technologies = new List<NFC_Technology>();
+        public string manufacturerID = null;
+        public NFC_Manufacturers manufacturerName = NFC_Manufacturers.unknown;
 
         //from tranceives
         public long scanDuration;
@@ -43,10 +45,16 @@ namespace AzApps.NativeNFC {
         public List<RawContent> rawContents;
 
         //Extrapolated by NFCManager
-        public string icName = null; //Match readable name
+        public NFC_IC icName = NFC_IC.unknown;
 
 
+        public string getICToString() {
+            return icName.ToString().Replace("_", " ").Trim();
+        }
 
+        public string getManufacturerToString() {
+            return manufacturerID.ToUpper() + " - " + manufacturerName.ToString().Replace("_", " ").Trim();
+        }
 
     }
 

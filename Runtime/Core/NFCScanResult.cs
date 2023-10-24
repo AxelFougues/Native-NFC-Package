@@ -12,6 +12,7 @@ namespace AzApps.NativeNFC {
         public NFCTag tag;
         public string userUpgradeID;
 
+
         public NFCScanResult(NFCTag tag) {
             time = NFCUtils.dateTimeToString(DateTime.Now);
             this.tag = extrapolateAndroidTagData(tag);
@@ -19,6 +20,11 @@ namespace AzApps.NativeNFC {
 
         NFCTag extrapolateAndroidTagData(NFCTag tag) {
             if (tag == null) return null;
+            //Extrapolate Manufacturer
+            if(!string.IsNullOrEmpty(tag.manufacturerID) && tag.manufacturerID.Length == 2) {
+                string formatedID = tag.manufacturerID.ToUpper();
+                if (NFCUtils.manufacturers.ContainsKey(formatedID)) tag.manufacturerName = NFCUtils.manufacturers[formatedID];
+            }
             //Extrapolate IC for NTAG w/ versionData
             if (!string.IsNullOrEmpty(tag.versionData) && NFCUtils.NTAG_VERSION_DATA_IC.ContainsKey(tag.versionData)) tag.icName = NFCUtils.NTAG_VERSION_DATA_IC[tag.versionData];
             //Clean up ndef message
