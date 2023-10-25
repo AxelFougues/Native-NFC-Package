@@ -64,17 +64,19 @@ namespace AzApps.NativeNFC {
         #region SCAN
 
         public static void startScan(AndroidActionType type) {
-            Debug.Log("Start scan " + type + " " + available);
+            Debug.Log("Unity request scan " + type );
             if (!available) return;
             unityActivity.Call("toggleNFCIntentCapture", true, type.ToString());
         }
 
         public static void startOperation(AndroidActionType type, string data) {
+            Debug.Log("Unity request operation " + type);
             if (!available) return;
             unityActivity.Call("toggleNFCIntentCapture", true, type.ToString(), data);
         }
 
         public static void stopScan() {
+            Debug.Log("Unity request stop scan");
             if (!available) return;
             unityActivity.Call("toggleNFCIntentCapture", false, AndroidActionType.NONE.ToString());
         }
