@@ -14,6 +14,7 @@ namespace AzApps.NativeNFC {
 
         public enum NFC_IC {
             unknown,
+            NTAG_203,
             NTAG_210u_NT2L1001,
             NTAG_210u_NT2H1001,
             NTAG_210,
@@ -32,6 +33,7 @@ namespace AzApps.NativeNFC {
             NTAG_I2C_2k,
             NTAG_I2C_plus_1k,
             NTAG_I2C_plus_2k,
+
             MIFARE_Ultralight_EV1_11,
             MIFARE_Ultralight_EV1_H11,
             MIFARE_Ultralight_EV1_21,
@@ -40,16 +42,49 @@ namespace AzApps.NativeNFC {
             MIFARE_Ultralight_AES_H,
             MIFARE_Ultralight_Nano,
             MIFARE_Ultralight_Nano_H,
-            NTAG_203,
             MIFARE_Ultralight_C,
             MIFARE_Ultralight,
+
+            MIFARE_Plus_2k,
+            MIFARE_Plus_4k,
+            MIFARE_Plus_EV1_2k,
+            MIFARE_Plus_EV1_4k,
+            MIFARE_Plus_EV2_2k,
+            MIFARE_Plus_EV2_4k,
+            MIFARE_Plus_S_2k,
+            MIFARE_Plus_S_4k,
+            MIFARE_Plus_X_2k,
+            MIFARE_Plus_X_4k,
+            MIFARE_Plus_SE_1k,
+
             MIFARE_Hospitality,
-            Mifare_Mini_03K,
+            MIFARE_Mini_03K,
+
             MIFARE_Classic_1k,
             MIFARE_Classic_2k,
             MIFARE_Classic_4k,
             MIFARE_Classic_EV1_1k,
             MIFARE_Classic_EV1_4k,
+
+            MIFARE_DESFire_Light,
+            MIFARE_DESFire_EV1_256,
+            MIFARE_DESFire_EV1_2k,
+            MIFARE_DESFire_EV1_4k,
+            MIFARE_DESFire_EV1_6k,
+            MIFARE_DESFire_EV1_8k,
+            MIFARE_DESFire_EV2_2k,
+            MIFARE_DESFire_EV2_4k,
+            MIFARE_DESFire_EV2_8k,
+            MIFARE_DESFire_EV2_16k,
+            MIFARE_DESFire_EV2_32k,
+            MIFARE_DESFire_EV3_2k,
+            MIFARE_DESFire_EV3_4k,
+            MIFARE_DESFire_EV3_6k,
+
+            SmartMX,
+
+            ICODE_SLIX2,
+            HID_iClass,
         }
 
         public enum NFC_Manufacturers {
@@ -211,7 +246,7 @@ namespace AzApps.NativeNFC {
     { "MH", NFC_IC.MIFARE_Hospitality },
 
     //Classic
-    { "MM3", NFC_IC.Mifare_Mini_03K },
+    { "MM3", NFC_IC.MIFARE_Mini_03K },
     { "MC1", NFC_IC.MIFARE_Classic_1k },
     { "MC2", NFC_IC.MIFARE_Classic_2k },
     { "MC4", NFC_IC.MIFARE_Classic_4k },
