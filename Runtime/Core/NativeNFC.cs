@@ -121,23 +121,6 @@ namespace AzApps.NativeNFC {
             return false;
         }
 
-        public static bool refreshDeviceInstalledApps() {
-            AndroidJavaClass unityClass;
-            AndroidJavaObject unityActivity;
-            if (Application.platform == RuntimePlatform.Android) {
-                unityClass = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
-                unityActivity = unityClass.GetStatic<AndroidJavaObject>("currentActivity");
-                if (unityActivity != null) {
-                    InstalledAppsInfo iai = JsonUtility.FromJson<InstalledAppsInfo>(unityActivity.Call<string>("androidInstalledApps"));
-                    if (iai != null) {
-                        iai.createIcons();
-                        installedApps = iai;
-                        return true;
-                    }
-                }
-            }
-            return false;
-        }
 
         #endregion
         #region VIVOKEY
