@@ -42,7 +42,7 @@ namespace AzApps.NativeNFC {
 
        
 
-        public static InstalledAppsInfo installedApps = null;
+        public static InstalledAppsInfo installedApps = new InstalledAppsInfo();
 
         private void Awake() {
             gameObject.name = "NativeNFC";
