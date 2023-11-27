@@ -194,6 +194,9 @@ namespace AzApps.NativeNFC {
             if (iai != null) {
                 iai.createIcons();
                 installedApps = iai;
+                Debug.Log("NativeNFC received " + installedApps.apps.Count + " installed app infos.");
+            } else {
+                Debug.Log("NativeNFC received no installed app infos.");
             }
         }
 
