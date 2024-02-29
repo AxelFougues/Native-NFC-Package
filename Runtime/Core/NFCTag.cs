@@ -8,7 +8,8 @@ namespace AzApps.NativeNFC {
     [Serializable]
     public class NFCTag {
 
-
+        public enum OperationType { DEEP_SCAN, NDEF_SCAN, NDEF_WRITE, POWER, NONE }
+        public enum Status { SUCCESS, FAILED, PARTIAL, NONE }
 
         public enum NFC_Technology {
             UNKNOWN,
@@ -27,6 +28,10 @@ namespace AzApps.NativeNFC {
 
 
         //Handled by the android lib
+        public string operation;
+        public string status;
+        public string error;
+        public string extraData;
         //from intent
         public string ID = null;
         public byte[] atqa;

@@ -29,18 +29,18 @@ namespace AzApps.NativeNFC {
 
         static string VIVOKEY_URL = "https://auth.vivokey.com/";
 
-        public static Action<string> onNFCScanFail;
+        public static Action<NFCTag> onNFCScanFail;
         public static Action<string> onNFCDebugLog;
         public static Action<string> onNFCDebugError;
         public static Action<string> onNFCScanStart;
-        public static Action<string> onNFCScanProgress;
-        public static Action<NFCScanResult> onNFCScanEnd;
+        public static Action<NFCTag> onNFCScanProgress;
+        public static Action<NFCTag> onNFCScanEnd;
 
         static bool available = false;
         static AndroidJavaClass unityClass;
         static AndroidJavaObject unityActivity;
 
-       
+
 
         public static InstalledAppsInfo installedApps = new InstalledAppsInfo();
 
@@ -61,7 +61,7 @@ namespace AzApps.NativeNFC {
         #region SCAN
 
         public static void startScan(AndroidActionType type) {
-            Debug.Log("Unity request scan " + type );
+            Debug.Log("Unity request scan " + type);
             if (!available) return;
             unityActivity.Call("toggleNFCIntentCapture", true, type.ToString());
         }
@@ -189,7 +189,7 @@ namespace AzApps.NativeNFC {
         #endregion
         #region FROM_UNITY
 
-        void installedAppsLoaded(string apps){
+        void installedAppsLoaded(string apps) {
             InstalledAppsInfo iai = JsonUtility.FromJson<InstalledAppsInfo>(apps);
             if (iai != null) {
                 iai.createIcons();
@@ -211,37 +211,47 @@ namespace AzApps.NativeNFC {
                             message = "NativeNFC: " + message;
                             Debug.Log(message);
                             onNFCDebugLog?.Invoke(message);
-                            return;
+                            break;
                         case AndroidMessagePrefix.DEBUG_ERROR:
                             message = "NativeNFC: " + message;
                             Debug.LogError(message);
                             onNFCDebugError?.Invoke(message);
-                            return;
+                            break;
 
                         case AndroidMessagePrefix.SCAN_FAIL:
                             //NFCManager.instance.androidScanFail(message);
-                            onNFCScanFail?.Invoke(message);
-                            return;
+                            NFCTag nfcTagFail = JsonUtility.FromJson<NFCTag>(message);
+                            if (nfcTagFail != null) {
+                                onNFCScanFail?.Invoke(nfcTagFail);
+                            } else {
+                                Debug.LogError("Tag de-serialization failed, NativeNFC lib returned invalid data");
+                            }
+                            break;
 
                         case AndroidMessagePrefix.SCAN_START:
                             //NFCManager.instance.androidStartScan(message);
                             onNFCScanStart?.Invoke(message);
-                            return;
+                            break;
 
                         case AndroidMessagePrefix.SCAN_PROGRESS:
                             //NFCManager.instance.androidScanProgress(message);
-                            onNFCScanProgress?.Invoke(message);
-                            return;
+                            NFCTag nfcTagProgress = JsonUtility.FromJson<NFCTag>(message);
+                            if (nfcTagProgress != null) {
+                                onNFCScanProgress?.Invoke(nfcTagProgress);
+                            } else {
+                                Debug.LogError("Tag de-serialization failed, NativeNFC lib returned invalid data");
+                            }
+                            break;
 
                         case AndroidMessagePrefix.SCAN_END:
                             //NFCManager.instance.androidScanEnd(message);
                             NFCTag nfcTag = JsonUtility.FromJson<NFCTag>(message);
                             if (nfcTag != null) {
-                                onNFCScanEnd?.Invoke(new NFCScanResult(nfcTag));
+                                onNFCScanEnd?.Invoke(nfcTag);
                             } else {
-                                onNFCScanFail?.Invoke("Tag de-serialization failed, NativeNFC lib returned invalid data: \n" + message);
+                                Debug.LogError("Tag de-serialization failed, NativeNFC lib returned invalid data");
                             }
-                            return;
+                            break;
                     }
                 }
             }
@@ -252,7 +262,7 @@ namespace AzApps.NativeNFC {
 
         #region UTILITY_CLASSES
 
-        
+
 
         //Audio outputs
 
