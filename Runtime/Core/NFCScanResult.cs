@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace AzApps.NativeNFC {
+namespace AbyssWalkerDev.NativeNFC {
 
     [Serializable]
     public class NFCScanResult {

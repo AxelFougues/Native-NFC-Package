@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using static AzApps.NativeNFC.NFCUtils;
+using static AbyssWalkerDev.NativeNFC.NFCUtils;
 
-namespace AzApps.NativeNFC {
+namespace AbyssWalkerDev.NativeNFC {
 
     public enum NDEFReadError { NONE, HAS_UNREADABLE_RECORDS, UNKNOWN, USER_CANCEL, TIMEOUT, NO_RECORDS }
 

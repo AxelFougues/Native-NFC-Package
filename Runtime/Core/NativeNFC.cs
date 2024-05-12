@@ -4,8 +4,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
-namespace AzApps.NativeNFC {
-
+namespace AbyssWalkerDev.NativeNFC {
+    /*
     public class NativeNFC : MonoBehaviour {
 
         public enum DeviceTheme {
@@ -345,4 +345,5 @@ namespace AzApps.NativeNFC {
 
         #endregion
     }
+    */
 }

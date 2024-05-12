@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using static AzApps.NativeNFC.NFCUtils;
+using static AbyssWalkerDev.NativeNFC.NFCUtils;
 
-namespace AzApps.NativeNFC {
+namespace AbyssWalkerDev.NativeNFC {
 
     [Serializable]
     public class NFCTag {
@@ -28,9 +28,6 @@ namespace AzApps.NativeNFC {
 
 
         //Handled by the android lib
-        public string operation;
-        public string status;
-        public string error;
         public string extraData;
         //from intent
         public string ID = null;
@@ -42,7 +39,6 @@ namespace AzApps.NativeNFC {
         public NFC_Manufacturers manufacturerName = NFC_Manufacturers.unknown;
 
         //from tranceives
-        public long scanDuration;
         public string versionData = null;
         public bool writable;
         public int storageSize;

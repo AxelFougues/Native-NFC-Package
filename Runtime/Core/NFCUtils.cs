@@ -8,7 +8,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using UnityEngine;
 
-namespace AzApps.NativeNFC {
+namespace AbyssWalkerDev.NativeNFC {
 
     public class NFCUtils : MonoBehaviour {
 
