@@ -1,9 +1,8 @@
 {
-  "name": "com.azapps.native-nfc",
+  "name": "com.abysswalkerdev.native-nfc",
   "displayName": "Native NFC",
   "description": "A complete Android NFC utility for Unity. Overrides Unity's player activity.",
   "version": "1.0.0",
-  "unity": "2022.1",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -14,10 +13,10 @@
     "email": "az.apps.games.com",
     "url": "https://github.com/AxelFougues"
   },
-  "dependencies": {},
   "keywords": [
     "NFC",
     "android"
   ],
-  "samples": []
+  "samples": [],
+  "type": "library"
 }
