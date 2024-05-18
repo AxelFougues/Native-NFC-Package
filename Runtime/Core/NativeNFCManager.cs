@@ -9,6 +9,10 @@ namespace AbyssWalkerDev.NativeNFC {
         public Action<Connection> onTagLost;
         public Action<Connection> onTagUpdated;
 
+        public Action<string> onDebug;
+        public Action<string> onWarning;
+        public Action<string> onError;
+
         static bool available = false;
         static AndroidJavaClass unityClass;
         static AndroidJavaObject unityActivity;
@@ -36,6 +40,32 @@ namespace AbyssWalkerDev.NativeNFC {
             unityActivity.Call("scan", false);
         }
 
+        public static bool startNDEFScan() {
+            if (!available) return false;
+            unityActivity.Call("scanNDEF", true);
+            return true;
+        }
+
+        public static void stopNDEFScan() {
+            if (!available) return;
+            unityActivity.Call("scanNDEF", false);
+        }
+
+        public static bool startPowerScan() {
+            if (!available) return false;
+            unityActivity.Call("scanPower", true);
+            return true;
+        }
+
+        public static void stopPowerScan() {
+            if (!available) return;
+            unityActivity.Call("scanPower", false);
+        }
+
+        public static void performOperation(Operation operation) {
+
+        }
+
         #endregion
 
         #region FROM_ANDROID
@@ -43,16 +73,19 @@ namespace AbyssWalkerDev.NativeNFC {
         void debugFromAndroid(string message) {
             message = "NativeNFC: " + message;
             Debug.Log(message);
+            onDebug?.Invoke(message);
         }
 
         void warningFromAndroid(string message) {
             message = "NativeNFC: " + message;
             Debug.LogWarning(message);
+            onWarning?.Invoke(message);
         }
 
         void errorFromAndroid(string message) {
             message = "NativeNFC: " + message;
             Debug.LogError(message);
+            onError?.Invoke(message);
         }
 
         void tagConnectedFromAndroid(string message) {

@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using UnityEngine;
 using static AbyssWalkerDev.NativeNFC.NFCUtils;
 
 namespace AbyssWalkerDev.NativeNFC {
@@ -42,7 +41,7 @@ namespace AbyssWalkerDev.NativeNFC {
         public string versionData = null;
         public bool writable;
         public int storageSize;
-        public NDEFContents ndefMessage;
+        public NDEFContent ndefMessage;
         public List<RawContent> rawContents;
 
         //Extrapolated by NFCManager
@@ -71,25 +70,27 @@ namespace AbyssWalkerDev.NativeNFC {
             }
             return result;
         }
-    }
 
-    [Serializable]
-    public class RawBlockContent {
+        [Serializable]
+        public class RawBlockContent {
 
-        public int blockIndex = 0;
-        public byte[] blockContent;
-        public short[] byteTypes;
-        public bool writable = true;
-        public bool readable = true;
-        public bool locked = false;
-        public bool blocked = false;
+            public int blockIndex = 0;
+            public byte[] blockContent;
+            public short[] byteTypes;
+            public bool writable = true;
+            public bool readable = true;
+            public bool locked = false;
+            public bool blocked = false;
 
-        public override string ToString() {
-            string hexIndex = $"0x{blockIndex:X4}";
-            if (blocked || locked) return "Block [" + hexIndex + "] " + "locked or blocked";
-            else if (blockContent == null || blockContent.Length == 0) return "Block [" + hexIndex + "] " + "N/A";
-            else return "Block [" + hexIndex + "] " + BitConverter.ToString(blockContent) + " |" + NFCUtils.bytesToText(blockContent) + "|";
+            public override string ToString() {
+                string hexIndex = $"0x{blockIndex:X4}";
+                if (blocked || locked) return "Block [" + hexIndex + "] " + "locked or blocked";
+                else if (blockContent == null || blockContent.Length == 0) return "Block [" + hexIndex + "] " + "N/A";
+                else return "Block [" + hexIndex + "] " + BitConverter.ToString(blockContent) + " |" + NFCUtils.bytesToText(blockContent) + "|";
+            }
+
         }
-
     }
+
+    
 }
