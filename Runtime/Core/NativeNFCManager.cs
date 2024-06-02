@@ -1,4 +1,6 @@
+using AbyssWalkerDev.NativeNFC;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 namespace AbyssWalkerDev.NativeNFC {
 
@@ -114,7 +116,83 @@ namespace AbyssWalkerDev.NativeNFC {
 
         #endregion
 
+
+
+
+
+        //TOOLS
+        public enum DeviceTheme {
+            UNSPECIFIED, LIGHT, DARK
+        };
+
+        public static InstalledAppsInfo installedApps = new InstalledAppsInfo();
+
+        public static DeviceTheme getDeviceTheme() {
+            AndroidJavaClass unityClass;
+            AndroidJavaObject unityActivity;
+            if (Application.platform == RuntimePlatform.Android) {
+                unityClass = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
+                unityActivity = unityClass.GetStatic<AndroidJavaObject>("currentActivity");
+                if (unityActivity != null) {
+                    return (DeviceTheme)unityActivity.Call<int>("androidTheme", unityActivity);
+                }
+            }
+            return DeviceTheme.UNSPECIFIED;
+        }
+
+        [Serializable]
+        public class InstalledAppsInfo {
+            public List<InstalledAppInfo> apps = new List<InstalledAppInfo>();
+
+            public void createIcons() {
+                foreach (InstalledAppInfo app in apps) app.createIcon();
+            }
+
+            public Sprite getIcon(string packageName) {
+                foreach (InstalledAppInfo info in apps) {
+                    if (info.packageName.Equals(packageName)) return info.renderedIcon;
+                }
+                return null;
+            }
+
+            public override string ToString() {
+                string s = "Installed Apps: " + apps.Count + " \n";
+                foreach (InstalledAppInfo app in apps) s += app.ToString();
+                return s;
+            }
+        }
+
+        [Serializable]
+        public class InstalledAppInfo {
+            [Serializable]
+            public class InstalledAppIcon {
+                public int[] iconData;
+            }
+            public string packageName;
+            public string readableName;
+            public InstalledAppIcon icon;
+            public Sprite renderedIcon;
+
+            public void createIcon() {
+                if (icon.iconData == null || icon.iconData.Length == 0) {
+                    renderedIcon = null;
+                    return;
+                }
+                byte[] bitmap = new byte[icon.iconData.Length];
+                for (int i = 0; i < icon.iconData.Length; i++) bitmap[i] = (byte)icon.iconData[i];
+                Texture2D texture2D = new Texture2D(1, 1, TextureFormat.ARGB32, false);
+                texture2D.LoadImage(bitmap);
+                renderedIcon = Sprite.Create(texture2D, new Rect(0.0f, 0.0f, texture2D.width, texture2D.height), new Vector2(0.5f, 0.5f));
+                icon = null;
+            }
+
+            public override string ToString() {
+                return packageName + " " + readableName + " " + renderedIcon.texture.width + "\n";
+            }
+
+        }
     }
+
 
     [Serializable]
     public class Connection {
