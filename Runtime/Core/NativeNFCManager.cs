@@ -4,14 +4,14 @@ namespace AbyssWalkerDev.NativeNFC {
 
     public class NativeNFCManager : MonoBehaviour {
 
-        public Action<Connection> onTagConnected;
-        public Action<Connection> onTagDisconnected;
-        public Action<Connection> onTagLost;
-        public Action<Connection> onTagUpdated;
+        public static Action<Connection> onTagConnected;
+        public static Action<Connection> onTagDisconnected;
+        public static Action<Connection> onTagLost;
+        public static Action<Connection> onTagUpdated;
 
-        public Action<string> onDebug;
-        public Action<string> onWarning;
-        public Action<string> onError;
+        public static Action<string> onDebug;
+        public static Action<string> onWarning;
+        public static Action<string> onError;
 
         static bool available = false;
         static AndroidJavaClass unityClass;
