@@ -255,6 +255,7 @@ namespace AbyssWalkerDev.NativeNFC {
         public OperationStatus operationStatus = OperationStatus.NONE;
         public ConnectionStatus connectionStatus = ConnectionStatus.CONNECTED;
         public long operationDuration = 0;
+        public String error;
 
     }
 
