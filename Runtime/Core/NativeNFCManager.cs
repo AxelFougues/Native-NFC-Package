@@ -19,7 +19,21 @@ namespace AbyssWalkerDev.NativeNFC {
         static AndroidJavaClass unityClass;
         static AndroidJavaObject unityActivity;
 
+        static NativeNFCManager instance = null;
+
+        [Header("Editor debug tools")]
+        public bool fakeAvailability;
+        public bool fakeTagResponses;
+        public Connection fakeConnection = new Connection();
+
         private void Awake() {
+            if (instance != null) {
+                Debug.Log("Multiple instances of NativeNFCManager detected. Only one must be present. Destroying self.");
+                Destroy(this);
+                gameObject.name = "Duplicate NativeNFC - Remove me";
+                return;
+            }
+            instance = this;
             gameObject.name = "NativeNFC";
 
             if (Application.platform == RuntimePlatform.Android) {
@@ -30,46 +44,80 @@ namespace AbyssWalkerDev.NativeNFC {
         }
 
         public static bool isAvailable() {
+            if (!available && instance != null && instance.fakeAvailability) return true; 
             return available;
         }
 
         #region SCAN
 
         public static bool startScan() {
-            if (!available) return false;
+            if (!available) {
+                if (instance != null && instance.fakeAvailability) {
+                    if(instance.fakeTagResponses) onTagConnected?.Invoke(instance.fakeConnection);
+                    return true;
+                }
+                else return false;
+            }
+
             unityActivity.Call("scan", true);
             return true;
         }
 
         public static void stopScan() {
-            if (!available) return;
+            if (!available) {
+                return;
+            }
             unityActivity.Call("scan", false);
         }
 
         public static bool startNDEFScan() {
-            if (!available) return false;
+            if (!available) {
+                if (instance != null && instance.fakeAvailability) {
+                    if (instance.fakeTagResponses) {
+                        onTagConnected?.Invoke(instance.fakeConnection);
+                        onTagUpdated?.Invoke(instance.fakeConnection);
+                    }
+                    return true;
+                } else return false;
+            }
             unityActivity.Call("scanNDEF", true);
             return true;
         }
 
         public static void stopNDEFScan() {
-            if (!available) return;
+            if (!available) {
+                return;
+            }
             unityActivity.Call("scanNDEF", false);
         }
 
         public static bool startPowerScan() {
-            if (!available) return false;
+            if (!available) {
+                if (instance != null && instance.fakeAvailability) {
+                    if (instance.fakeTagResponses) {
+                        onTagConnected?.Invoke(instance.fakeConnection);
+                    }
+                    return true;
+                } else return false;
+            }
             unityActivity.Call("scanPower", true);
             return true;
         }
 
         public static void stopPowerScan() {
-            if (!available) return;
+            if (!available) {
+                return;
+            }
             unityActivity.Call("scanPower", false);
         }
 
         public static void performOperation(Operation operation) {
-
+            if (!available) {
+                if (instance != null && instance.fakeAvailability) {
+                    onTagUpdated?.Invoke(instance.fakeConnection);
+                }
+                return;
+            }
         }
 
         #endregion
@@ -203,7 +251,7 @@ namespace AbyssWalkerDev.NativeNFC {
         public enum OperationStatus { SUCCESS, FAILED, PARTIAL, NONE }
         public enum ConnectionStatus { CONNECTED, DISCONNECTED, LOST }
 
-        public NFCTag tag;
+        public NFCTag tag = new NFCTag();
         public OperationStatus operationStatus = OperationStatus.NONE;
         public ConnectionStatus connectionStatus = ConnectionStatus.CONNECTED;
         public long operationDuration = 0;
