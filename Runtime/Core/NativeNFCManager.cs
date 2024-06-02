@@ -25,9 +25,13 @@ namespace AbyssWalkerDev.NativeNFC {
             if (Application.platform == RuntimePlatform.Android) {
                 unityClass = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
                 unityActivity = unityClass.GetStatic<AndroidJavaObject>("currentActivity");
+                available = true;
             }
         }
 
+        public static bool isAvailable() {
+            return available;
+        }
 
         #region SCAN
 
