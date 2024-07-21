@@ -16,8 +16,8 @@ public class Operation : MonoBehaviour{
         ReadNDEF
     }
     public class ChainedCommand {
-        List<byte> command;
-        List<byte> expectedReply;
+        List<byte> command = new List<byte>();
+        List<byte> expectedReply = new List<byte>();
     }
 
     public StandardComplexOperation standardComplexOperation;
