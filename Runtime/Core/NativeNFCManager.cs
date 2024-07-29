@@ -101,7 +101,7 @@ namespace AbyssWalkerDev.NativeNFC {
                     return true;
                 } else return false;
             }
-            unityActivity.Call("writeNDEF", true, content);
+            unityActivity.Call("writeNDEF", true, JsonUtility.ToJson(content));
             return true;
         }
 
