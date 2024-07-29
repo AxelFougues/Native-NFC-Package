@@ -34,7 +34,7 @@ namespace AbyssWalkerDev.NativeNFC {
                 return;
             }
             instance = this;
-            gameObject.name = "NativeNFC";
+            gameObject.name = "NativeNFCManager";
 
             if (Application.platform == RuntimePlatform.Android) {
                 unityClass = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
