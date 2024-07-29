@@ -91,6 +91,34 @@ namespace AbyssWalkerDev.NativeNFC {
             unityActivity.Call("scanNDEF", false);
         }
 
+        public static bool startNDEFWrite(NDEFContent content) {
+            if (!available) {
+                if (instance != null && instance.fakeAvailability) {
+                    if (instance.fakeTagResponses) {
+                        onTagConnected?.Invoke(instance.fakeConnection);
+                        onTagUpdated?.Invoke(instance.fakeConnection);
+                    }
+                    return true;
+                } else return false;
+            }
+            unityActivity.Call("writeNDEF", true, content);
+            return true;
+        }
+
+        public static bool stopNDEFWrite() {
+            if (!available) {
+                if (instance != null && instance.fakeAvailability) {
+                    if (instance.fakeTagResponses) {
+                        onTagConnected?.Invoke(instance.fakeConnection);
+                        onTagUpdated?.Invoke(instance.fakeConnection);
+                    }
+                    return true;
+                } else return false;
+            }
+            unityActivity.Call("writeNDEF", false, "");
+            return true;
+        }
+
         public static bool startPowerScan() {
             if (!available) {
                 if (instance != null && instance.fakeAvailability) {
