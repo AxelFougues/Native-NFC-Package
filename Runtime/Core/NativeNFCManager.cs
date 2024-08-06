@@ -277,11 +277,9 @@ namespace AbyssWalkerDev.NativeNFC {
     [Serializable]
     public class Connection {
         public enum OperationStatus { SUCCESS, FAILED, PARTIAL, NONE }
-        public enum ConnectionStatus { CONNECTED, DISCONNECTED, LOST }
 
         public NFCTag tag = new NFCTag();
         public OperationStatus operationStatus = OperationStatus.NONE;
-        public ConnectionStatus connectionStatus = ConnectionStatus.CONNECTED;
         public long operationDuration = 0;
         public string error;
 
