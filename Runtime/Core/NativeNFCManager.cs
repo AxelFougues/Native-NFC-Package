@@ -6,7 +6,7 @@ namespace AbyssWalkerDev.NativeNFC {
 
     public class NativeNFCManager : MonoBehaviour {
 
-        public enum ActionType { NONE, DUMP, NDEF, POWER, WNDEF, FNDEF, FRONDEF, OPERATION };
+        public enum ActionType { NONE, DUMP, NDEF, POWER, WNDEF, FNDEF, FRONDEF, MRONDEF, OPERATION };
 
         public static Action<Connection> onTagConnected;
         public static Action<Connection> onTagDisconnected;
