@@ -68,6 +68,12 @@ namespace AbyssWalkerDev.NativeNFC {
             if (!available) {
                 if (instance != null && instance.fakeAvailability) {
                     if (instance.fakeTagResponses) onTagConnected?.Invoke(instance.fakeConnection);
+                    switch (actionOnConnect) {
+                        case ActionType.DUMP: dumpMemory(); break;
+                        case ActionType.MRONDEF: makeNDEFReadOnly(); break;
+                        case ActionType.NDEF: readNDEF(); break;
+                        case ActionType.POWER: power(); break;
+                    }
                     return true;
                 } else return false;
             }
@@ -79,6 +85,12 @@ namespace AbyssWalkerDev.NativeNFC {
             if (!available) {
                 if (instance != null && instance.fakeAvailability) {
                     if (instance.fakeTagResponses) onTagConnected?.Invoke(instance.fakeConnection);
+                    switch (actionOnConnect) {
+                        case ActionType.FNDEF: formatNDEF(new NDEFContent()); break;
+                        case ActionType.FRONDEF: formatNDEFReadOnly(new NDEFContent()); break;
+                        case ActionType.OPERATION: performOperation(new Operation()); break;
+                        case ActionType.WNDEF: writeNDEF(new NDEFContent()); break;
+                    }
                     return true;
                 } else return false;
             }
@@ -112,7 +124,6 @@ namespace AbyssWalkerDev.NativeNFC {
             if (!available) {
                 if (instance != null && instance.fakeAvailability) {
                     if (instance.fakeTagResponses) {
-                        onTagConnected?.Invoke(instance.fakeConnection);
                         onTagUpdated?.Invoke(instance.fakeConnection);
                     }
                     return true;
@@ -126,7 +137,6 @@ namespace AbyssWalkerDev.NativeNFC {
             if (!available) {
                 if (instance != null && instance.fakeAvailability) {
                     if (instance.fakeTagResponses) {
-                        onTagConnected?.Invoke(instance.fakeConnection);
                         onTagUpdated?.Invoke(instance.fakeConnection);
                     }
                     return true;
@@ -140,7 +150,6 @@ namespace AbyssWalkerDev.NativeNFC {
             if (!available) {
                 if (instance != null && instance.fakeAvailability) {
                     if (instance.fakeTagResponses) {
-                        onTagConnected?.Invoke(instance.fakeConnection);
                         onTagUpdated?.Invoke(instance.fakeConnection);
                     }
                     return true;
@@ -154,7 +163,6 @@ namespace AbyssWalkerDev.NativeNFC {
             if (!available) {
                 if (instance != null && instance.fakeAvailability) {
                     if (instance.fakeTagResponses) {
-                        onTagConnected?.Invoke(instance.fakeConnection);
                         onTagUpdated?.Invoke(instance.fakeConnection);
                     }
                     return true;
@@ -168,7 +176,6 @@ namespace AbyssWalkerDev.NativeNFC {
             if (!available) {
                 if (instance != null && instance.fakeAvailability) {
                     if (instance.fakeTagResponses) {
-                        onTagConnected?.Invoke(instance.fakeConnection);
                         onTagUpdated?.Invoke(instance.fakeConnection);
                     }
                     return true;
@@ -182,7 +189,7 @@ namespace AbyssWalkerDev.NativeNFC {
             if (!available) {
                 if (instance != null && instance.fakeAvailability) {
                     if (instance.fakeTagResponses) {
-                        onTagConnected?.Invoke(instance.fakeConnection);
+                        onTagUpdated?.Invoke(instance.fakeConnection);
                     }
                     return true;
                 } else return false;
@@ -195,7 +202,7 @@ namespace AbyssWalkerDev.NativeNFC {
             if (!available) {
                 if (instance != null && instance.fakeAvailability) {
                     if (instance.fakeTagResponses) {
-                        onTagConnected?.Invoke(instance.fakeConnection);
+                        onTagUpdated?.Invoke(instance.fakeConnection);
                     }
                     return true;
                 } else return false;
