@@ -23,38 +23,67 @@ namespace AbyssWalkerDev.NativeNFC {
             NFC_F,
             NFC_V
         }
-
-
+        public enum MifareClassicType {UNKNOWN = -1,CLASSIC = 0, PLUS = 1, PRO = 2 }
+        public enum MifareUltralightType { UNKNOWN = -1, ULTRALIGHT = 0, ULTRALIGHT_C = 1 }
+        public enum BarcodeType { UNKNOWN = -1, KOVIO = 1 }
 
         //Handled by the android lib
-        public string extraData;
+
+        public string extraData = null;
         //from intent
         public string ID = null;
-        public byte[] atqa;
-        public short sak;
-        public string emulated;
         public List<NFC_Technology> technologies = new List<NFC_Technology>();
-        public string manufacturerID = null;
-        public NFC_Manufacturers manufacturerName = NFC_Manufacturers.unknown;
-
-        //from tranceives
+        //from dump
         public string versionData = null;
-        public bool writable;
-        public int storageSize;
-        public NDEFContent ndefMessage;
-        public List<RawContent> rawContents;
+        public string manufacturerID = null;
+        public string emulated = null;
+        public int storageSize = 0;
+        public List<RawContent> rawContents = new List<RawContent>();
+        //NfcA
+        public byte[] atqa = null;
+        public short sak = 0;
+        public int transceiveTimeout = 0;
+        public int transceiveMaxLength = 0;
+        //NDEF
+        public string ndefType = null;
+        public bool ndefWritable = false;
+        public int ndefMaxSize = 0;
+        public NDEFContent ndefMessage = null;
+        //Barcode
+        public byte[] barcode = null;
+        public BarcodeType barcodeType = BarcodeType.UNKNOWN;
+        //MifareUltralight
+        public MifareUltralightType muType = MifareUltralightType.UNKNOWN;
+        //MifareClassic
+        public MifareClassicType mcSize = MifareClassicType.UNKNOWN;
+        //NfcB
+        public byte[] protocolInfo = null;
+        public byte[] appData = null;
+        //IsoDep
+        public byte[] hiLayerResponse = null;
+        public byte[] historicalBytes = null;
+        public bool isExtendedLengthApduSupported = false;
+        //NfcF
+        public byte[] manufacturer = null;
+        public byte[] systemCode = null;
+        //NfcV
+        public byte dsfId = 0;
+        public byte responseFlags = 0;
+
 
         //Extrapolated by NFCManager
         public NFC_IC icName = NFC_IC.unknown;
+        public NFC_Manufacturers manufacturerName = NFC_Manufacturers.unknown;
+
 
 
         public string getICToString() {
             return icName.ToString().Replace("_", " ").Trim();
         }
-
         public string getManufacturerToString() {
             return manufacturerID.ToUpper() + " - " + manufacturerName.ToString().Replace("_", " ").Trim();
         }
+
 
     }
 

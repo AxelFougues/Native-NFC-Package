@@ -6,6 +6,8 @@ namespace AbyssWalkerDev.NativeNFC {
 
     public class NativeNFCManager : MonoBehaviour {
 
+        public enum ActionType { NONE, DUMP, NDEF, POWER, WNDEF, FNDEF, FRONDEF, OPERATION };
+
         public static Action<Connection> onTagConnected;
         public static Action<Connection> onTagDisconnected;
         public static Action<Connection> onTagLost;
@@ -50,7 +52,7 @@ namespace AbyssWalkerDev.NativeNFC {
 
         #region SCAN
 
-        public static bool startScan() {
+        public static bool connect() {
             if (!available) {
                 if (instance != null && instance.fakeAvailability) {
                     if(instance.fakeTagResponses) onTagConnected?.Invoke(instance.fakeConnection);
@@ -59,18 +61,40 @@ namespace AbyssWalkerDev.NativeNFC {
                 else return false;
             }
 
-            unityActivity.Call("scan", true);
+            unityActivity.Call("connect");
+            return true;
+        }
+        public static bool connect(ActionType actionOnConnect) {
+            if (!available) {
+                if (instance != null && instance.fakeAvailability) {
+                    if (instance.fakeTagResponses) onTagConnected?.Invoke(instance.fakeConnection);
+                    return true;
+                } else return false;
+            }
+
+            unityActivity.Call("connect", (int)actionOnConnect);
+            return true;
+        }
+        public static bool connect(ActionType actionOnConnect, string actionOnConnectParameters) {
+            if (!available) {
+                if (instance != null && instance.fakeAvailability) {
+                    if (instance.fakeTagResponses) onTagConnected?.Invoke(instance.fakeConnection);
+                    return true;
+                } else return false;
+            }
+
+            unityActivity.Call("connect", (int)actionOnConnect, actionOnConnectParameters);
             return true;
         }
 
-        public static void stopScan() {
+        public static void disconnect() {
             if (!available) {
                 return;
             }
-            unityActivity.Call("scan", false);
+            unityActivity.Call("disconnect");
         }
 
-        public static bool startNDEFScan() {
+        public static bool dumpMemory() {
             if (!available) {
                 if (instance != null && instance.fakeAvailability) {
                     if (instance.fakeTagResponses) {
@@ -80,18 +104,11 @@ namespace AbyssWalkerDev.NativeNFC {
                     return true;
                 } else return false;
             }
-            unityActivity.Call("scanNDEF", true);
+            unityActivity.Call("dumpMemory");
             return true;
         }
 
-        public static void stopNDEFScan() {
-            if (!available) {
-                return;
-            }
-            unityActivity.Call("scanNDEF", false);
-        }
-
-        public static bool startNDEFWrite(NDEFContent content) {
+        public static bool readNDEF() {
             if (!available) {
                 if (instance != null && instance.fakeAvailability) {
                     if (instance.fakeTagResponses) {
@@ -101,11 +118,11 @@ namespace AbyssWalkerDev.NativeNFC {
                     return true;
                 } else return false;
             }
-            unityActivity.Call("writeNDEF", true, JsonUtility.ToJson(content));
+            unityActivity.Call("readNDEF");
             return true;
         }
 
-        public static bool stopNDEFWrite() {
+        public static bool writeNDEF(NDEFContent content) {
             if (!available) {
                 if (instance != null && instance.fakeAvailability) {
                     if (instance.fakeTagResponses) {
@@ -115,11 +132,53 @@ namespace AbyssWalkerDev.NativeNFC {
                     return true;
                 } else return false;
             }
-            unityActivity.Call("writeNDEF", false, "");
+            unityActivity.Call("writeNDEF", JsonUtility.ToJson(content));
             return true;
         }
 
-        public static bool startPowerScan() {
+        public static bool formatNDEF(NDEFContent content) {
+            if (!available) {
+                if (instance != null && instance.fakeAvailability) {
+                    if (instance.fakeTagResponses) {
+                        onTagConnected?.Invoke(instance.fakeConnection);
+                        onTagUpdated?.Invoke(instance.fakeConnection);
+                    }
+                    return true;
+                } else return false;
+            }
+            unityActivity.Call("formatNDEF", JsonUtility.ToJson(content));
+            return true;
+        }
+
+        public static bool formatNDEFReadOnly(NDEFContent content) {
+            if (!available) {
+                if (instance != null && instance.fakeAvailability) {
+                    if (instance.fakeTagResponses) {
+                        onTagConnected?.Invoke(instance.fakeConnection);
+                        onTagUpdated?.Invoke(instance.fakeConnection);
+                    }
+                    return true;
+                } else return false;
+            }
+            unityActivity.Call("formatNDEFReadOnly", JsonUtility.ToJson(content));
+            return true;
+        }
+
+        public static bool makeNDEFReadOnly() {
+            if (!available) {
+                if (instance != null && instance.fakeAvailability) {
+                    if (instance.fakeTagResponses) {
+                        onTagConnected?.Invoke(instance.fakeConnection);
+                        onTagUpdated?.Invoke(instance.fakeConnection);
+                    }
+                    return true;
+                } else return false;
+            }
+            unityActivity.Call("makeNDEFReadOnly");
+            return true;
+        }
+
+        public static bool power() {
             if (!available) {
                 if (instance != null && instance.fakeAvailability) {
                     if (instance.fakeTagResponses) {
@@ -128,24 +187,21 @@ namespace AbyssWalkerDev.NativeNFC {
                     return true;
                 } else return false;
             }
-            unityActivity.Call("scanPower", true);
+            unityActivity.Call("power");
             return true;
         }
 
-        public static void stopPowerScan() {
-            if (!available) {
-                return;
-            }
-            unityActivity.Call("scanPower", false);
-        }
-
-        public static void performOperation(Operation operation) {
+        public static bool performOperation(Operation operation) {
             if (!available) {
                 if (instance != null && instance.fakeAvailability) {
-                    onTagUpdated?.Invoke(instance.fakeConnection);
-                }
-                return;
+                    if (instance.fakeTagResponses) {
+                        onTagConnected?.Invoke(instance.fakeConnection);
+                    }
+                    return true;
+                } else return false;
             }
+            unityActivity.Call("performOperation", JsonUtility.ToJson(operation));
+            return true;
         }
 
         #endregion
