@@ -15,6 +15,7 @@ public class Operation : MonoBehaviour{
     public class ChainedCommand {
         public byte[] command = null;
         public byte[] expectedReply = null;
+        public byte[] reply = null;
     }
 
 

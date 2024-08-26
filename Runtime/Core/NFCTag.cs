@@ -29,7 +29,7 @@ namespace AbyssWalkerDev.NativeNFC {
 
         //Handled by the android lib
 
-        public string extraData = null;
+        public Operation lastOperation = null;
         //from intent
         public string ID = null;
         public List<NFC_Technology> technologies = new List<NFC_Technology>();
