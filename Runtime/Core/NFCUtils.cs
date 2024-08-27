@@ -458,7 +458,10 @@ namespace AbyssWalkerDev.NativeNFC {
         }
 
         public static byte[] hexStringToBytes(string hexString) {
-            return BigInteger.Parse(hexString, System.Globalization.NumberStyles.HexNumber).ToByteArray().Reverse().ToArray();
+            return Enumerable.Range(0, hexString.Length)
+                     .Where(x => x % 2 == 0)
+                     .Select(x => Convert.ToByte(hexString.Substring(x, 2), 16))
+                     .ToArray();
         }
 
         public static int[] hexStringToInts(string hexString) {
