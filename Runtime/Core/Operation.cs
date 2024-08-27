@@ -24,12 +24,24 @@ public class Operation{
             this.command = command;
             this.expectedReply = expectedReply;
         }
+
+        public override string ToString() {
+            return "Command:\n"
+                + "Cmd: " + NFCUtils.bytesToHexString(command) + "\n"
+                + "Ex. reply: " + NFCUtils.bytesToHexString(expectedReply) + "\n"
+                + "Reply: " + NFCUtils.bytesToHexString(reply) + "\n";
+        }
+
     }
 
     public override string ToString() {
-        return "Operation:\n"
+        string output = "Operation:\n"
             + "Technology used: " + technologyUsed + "\n"
             + "Commands: " + commands.Count + "\n";
+        foreach (ChainedCommand cc in commands) {
+            output += cc.ToString();
+        }
+        return output;
     }
 
 }
