@@ -11,7 +11,7 @@ public class Operation : MonoBehaviour{
     public NFC_Technology technologyUsed = NFC_Technology.UNKNOWN;
     public List<ChainedCommand> commands = new List<ChainedCommand>();
 
-
+    [Serializable]
     public class ChainedCommand {
         public byte[] command = null;
         public byte[] expectedReply = null;

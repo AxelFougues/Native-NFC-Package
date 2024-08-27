@@ -235,26 +235,35 @@ namespace AbyssWalkerDev.NativeNFC {
 
         void tagConnectedFromAndroid(string message) {
             Connection c = JsonUtility.FromJson<Connection>(message);
-            if (c != null) onTagConnected?.Invoke(c);
-            else errorFromAndroid("[Tag connected] Can't parse received connection object: " + message);
+            if (c != null) {
+                onTagConnected?.Invoke(c);
+                Debug.Log("[Tag connected]" + message);
+            } else errorFromAndroid("[Tag connected] Can't parse received connection object: " + message);
+            Debug.Log(message);
         }
 
         void tagDisconnectedFromAndroid(string message) {
             Connection c = JsonUtility.FromJson<Connection>(message);
-            if (c != null) onTagDisconnected?.Invoke(c);
-            else errorFromAndroid("[Tag disconnected] Can't parse received connection object: " + message);
+            if (c != null) {
+                onTagDisconnected?.Invoke(c);
+                Debug.Log("[Tag disconnected]" + message);
+            } else errorFromAndroid("[Tag disconnected] Can't parse received connection object: " + message); 
         }
 
         void tagLostFromAndroid(string message) {
             Connection c = JsonUtility.FromJson<Connection>(message);
-            if (c != null) onTagLost?.Invoke(c);
-            else errorFromAndroid("[Tag lost] Can't parse received connection object: " + message);
+            if (c != null) {
+                onTagLost?.Invoke(c);
+                Debug.Log("[Tag lost]" + message);
+            } else errorFromAndroid("[Tag lost] Can't parse received connection object: " + message);
         }
 
         void tagUpdatedFromAndroid(string message) {
             Connection c = JsonUtility.FromJson<Connection>(message);
-            if (c != null) onTagUpdated?.Invoke(c);
-            else errorFromAndroid("[Tag update] Can't parse received connection object: " + message);
+            if (c != null) {
+                onTagUpdated?.Invoke(c);
+                Debug.Log("[Tag update]" + message);
+            } else errorFromAndroid("[Tag update] Can't parse received connection object: " + message);
         }
 
         #endregion
