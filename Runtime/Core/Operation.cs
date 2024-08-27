@@ -5,7 +5,7 @@ using UnityEngine;
 using static AbyssWalkerDev.NativeNFC.NFCTag;
 
 [Serializable]
-public class Operation : MonoBehaviour{
+public class Operation{
 
     
     public NFC_Technology technologyUsed = NFC_Technology.UNKNOWN;
