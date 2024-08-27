@@ -16,6 +16,14 @@ public class Operation : MonoBehaviour{
         public byte[] command = null;
         public byte[] expectedReply = null;
         public byte[] reply = null;
+
+        public ChainedCommand() {
+        }
+
+        public ChainedCommand(byte[] command, byte[] expectedReply) {
+            this.command = command;
+            this.expectedReply = expectedReply;
+        }
     }
 
 
