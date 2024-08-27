@@ -352,6 +352,7 @@ namespace AbyssWalkerDev.NativeNFC {
 
         public NFCTag tag = new NFCTag();
         public OperationStatus operationStatus = OperationStatus.NONE;
+        public Operation lastOperation = null;
         public long operationDuration = 0;
         public string error;
 

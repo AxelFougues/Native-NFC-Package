@@ -28,8 +28,7 @@ namespace AbyssWalkerDev.NativeNFC {
         public enum BarcodeType { UNKNOWN = -1, KOVIO = 1 }
 
         //Handled by the android lib
-
-        public Operation lastOperation = null;
+   
         //from intent
         public string ID = null;
         public List<NFC_Technology> technologies = new List<NFC_Technology>();
