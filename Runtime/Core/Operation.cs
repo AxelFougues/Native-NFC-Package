@@ -26,5 +26,10 @@ public class Operation{
         }
     }
 
+    public override string ToString() {
+        return "Operation:\n"
+            + "Technology used: " + technologyUsed + "\n"
+            + "Commands: " + commands.Count + "\n";
+    }
 
 }
