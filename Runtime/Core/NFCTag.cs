@@ -83,6 +83,11 @@ namespace AbyssWalkerDev.NativeNFC {
             return manufacturerID.ToUpper() + " - " + manufacturerName.ToString().Replace("_", " ").Trim();
         }
 
+        public override string ToString() {
+            return "Tag:\n"
+                + "ID: " + ID + "\n"
+                + "Version data: " + versionData + "\n";
+        }
 
     }
 

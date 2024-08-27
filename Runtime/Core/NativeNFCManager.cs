@@ -237,7 +237,7 @@ namespace AbyssWalkerDev.NativeNFC {
             Connection c = JsonUtility.FromJson<Connection>(message);
             if (c != null) {
                 onTagConnected?.Invoke(c);
-                Debug.Log("[Tag connected]" + message);
+                Debug.Log("[Tag connected]\n" + message + "\n" + c.ToString());
             } else errorFromAndroid("[Tag connected] Can't parse received connection object: " + message);
             Debug.Log(message);
         }
@@ -246,7 +246,7 @@ namespace AbyssWalkerDev.NativeNFC {
             Connection c = JsonUtility.FromJson<Connection>(message);
             if (c != null) {
                 onTagDisconnected?.Invoke(c);
-                Debug.Log("[Tag disconnected]" + message);
+                Debug.Log("[Tag disconnected]\n" + message + "\n" + c.ToString());
             } else errorFromAndroid("[Tag disconnected] Can't parse received connection object: " + message); 
         }
 
@@ -254,7 +254,7 @@ namespace AbyssWalkerDev.NativeNFC {
             Connection c = JsonUtility.FromJson<Connection>(message);
             if (c != null) {
                 onTagLost?.Invoke(c);
-                Debug.Log("[Tag lost]" + message);
+                Debug.Log("[Tag lost]\n" + message + "\n" + c.ToString());
             } else errorFromAndroid("[Tag lost] Can't parse received connection object: " + message);
         }
 
@@ -262,7 +262,7 @@ namespace AbyssWalkerDev.NativeNFC {
             Connection c = JsonUtility.FromJson<Connection>(message);
             if (c != null) {
                 onTagUpdated?.Invoke(c);
-                Debug.Log("[Tag update]" + message);
+                Debug.Log("[Tag update]\n" + message + "\n" + c.ToString());
             } else errorFromAndroid("[Tag update] Can't parse received connection object: " + message);
         }
 
@@ -355,6 +355,15 @@ namespace AbyssWalkerDev.NativeNFC {
         public Operation lastOperation = null;
         public long operationDuration = 0;
         public string error;
+
+        public override string ToString() {
+            return "Connection:\n"
+                + "Operation status: " + operationStatus + "\n"
+                + "Operation duration: " + operationDuration + "\n"
+                + "Error: " + error + "\n"
+                + "Last operation: " + (lastOperation == null ? "null" : lastOperation.ToString()) + "\n"
+                + "Tag: " + (tag == null ? "null" : tag.ToString()) + "\n";
+        }
 
     }
 
