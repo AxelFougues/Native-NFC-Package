@@ -448,6 +448,19 @@ namespace AbyssWalkerDev.NativeNFC {
             return hex.ToString();
         }
 
+        public static string byteToBinaryString(byte b) {
+            StringBuilder str = new StringBuilder(8);
+            int[] bl = new int[8];
+
+            for (int i = 0; i < bl.Length; i++) {
+                bl[bl.Length - 1 - i] = ((b & (1 << i)) != 0) ? 1 : 0;
+            }
+
+            foreach (int num in bl) str.Append(num);
+
+            return str.ToString();
+        }
+
         public static string hexStringToText(string hexString) {
             var bytes = new byte[hexString.Length / 2];
             for (var i = 0; i < bytes.Length; i++) {

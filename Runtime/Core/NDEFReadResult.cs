@@ -9,12 +9,28 @@ namespace AbyssWalkerDev.NativeNFC {
 
     [Serializable]
     public class NDEFContent {
-        public bool Success;
-        public NDEFReadError Error;
+        public bool success;
+        public NDEFReadError error;
         public List<NDEFRecord> records = new List<NDEFRecord>();
 
         public void trySimplify() {
             foreach (NDEFRecord record in records) record.trySimplify();
+        }
+
+        public override string ToString() {
+            return ToStringIndented(0, "");
+        }
+
+        public string ToStringIndented(int level, string character) {
+            string indentation = "";
+            for (int i = 0; i < level; i++) indentation += character;
+            string output = indentation + "---NDEF Record---\n";
+            output += indentation + "Success: " + success + "\n";
+            output += indentation + "Earror: " + error + "\n";
+            output += indentation + "Records:";
+            if (records.Count > 0) foreach (NDEFRecord record in records) output += record.ToStringIndented(level++, character) + "\n";
+            else output += "- None";
+            return output;
         }
 
         [Serializable]
@@ -90,6 +106,30 @@ namespace AbyssWalkerDev.NativeNFC {
             public string packageName;
             public string domain;
             public string domainDataType;
+
+            public override string ToString() {
+                return ToStringIndented(0, "");
+            }
+
+            public string ToStringIndented(int level, string character) {
+                string indentation = "";
+                for (int i = 0; i < level; i++) indentation += character;
+                string output = indentation + "---NDEF Record---\n";
+                output += indentation + "Simple record type: " + simpleRecordType + "\n";
+                output += indentation + "TNF: " + tnf + "\n";
+                output += indentation + "Record type: " + (recordType == null? "null" : string.Join(",", recordType)) + "\n";
+                output += indentation + "Payload: " + (payload == null ? "null" : string.Join(",", payload)) + "\n";
+                output += indentation + "Record ID: " + (recordID == null ? "null" : string.Join(",", recordID)) + "\n";
+                output += indentation + "Text: " + text + "\n";
+                output += indentation + "Language code: " + languageCode + "\n";
+                output += indentation + "Text encoding: " + textEncoding + "\n";
+                output += indentation + "URI: " + uri + "\n";
+                output += indentation + "Mime type: " + mimeType + "\n";
+                output += indentation + "Package name: " + packageName + "\n";
+                output += indentation + "Domain: " + domain + "\n";
+                output += indentation + "Domain data type: " + domainDataType + "\n";
+                return output;
+            }
         }
     }
 

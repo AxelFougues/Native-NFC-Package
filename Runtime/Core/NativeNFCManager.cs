@@ -357,12 +357,23 @@ namespace AbyssWalkerDev.NativeNFC {
         public string error;
 
         public override string ToString() {
-            return "Connection:\n"
-                + "Operation status: " + operationStatus + "\n"
-                + "Operation duration: " + operationDuration + "\n"
-                + "Error: " + error + "\n"
-                + "Last operation: " + (lastOperation == null ? "null" : lastOperation.ToString()) + "\n"
-                + "Tag: " + (tag == null ? "null" : tag.ToString()) + "\n";
+            return ToStringIndented(0, "");
+        }
+
+        public string ToStringIndented(int level, string character) {
+            string indentation = "";
+            for (int i = 0; i < level; i++) indentation += character;
+            string output = indentation + "---Connection---\n";
+            output += indentation + (string.IsNullOrWhiteSpace(error) ? "" : "Error: " + error + "\n");
+            output += indentation + "Op. status: " + operationStatus;
+            output += indentation + "Op. duration: " + operationDuration;
+            if (lastOperation != null) {
+                output += lastOperation.ToStringIndented(level++, character);
+            }
+            if (tag != null) {
+                output += tag.ToStringIndented(level++, character);
+            }
+            return output;
         }
 
     }

@@ -5,9 +5,9 @@ using UnityEngine;
 using static AbyssWalkerDev.NativeNFC.NFCTag;
 
 [Serializable]
-public class Operation{
+public class Operation {
 
-    
+
     public NFC_Technology technologyUsed = NFC_Technology.UNKNOWN;
     public List<ChainedCommand> commands = new List<ChainedCommand>();
 
@@ -26,22 +26,36 @@ public class Operation{
         }
 
         public override string ToString() {
-            return "Command:\n"
-                + "Cmd: " + NFCUtils.bytesToHexString(command) + "\n"
-                + "Ex. reply: " + NFCUtils.bytesToHexString(expectedReply) + "\n"
-                + "Reply: " + NFCUtils.bytesToHexString(reply) + "\n";
+            return ToStringIndented(0, "");
+        }
+
+        public string ToStringIndented(int level, string character) {
+            string indentation = "";
+            for (int i = 0; i < level; i++) indentation += character;
+            string output = indentation + "---Command---\n";
+            output += indentation + "Cmd: " + NFCUtils.bytesToHexString(command) + "\n";
+            output += indentation + "Ex. reply: " + NFCUtils.bytesToHexString(expectedReply) + "\n";
+            output += indentation + "Reply: " + NFCUtils.bytesToHexString(reply) + "\n";
+            return output;
         }
 
     }
 
     public override string ToString() {
-        string output = "Operation:\n"
-            + "Technology used: " + technologyUsed + "\n"
-            + "Commands: " + commands.Count + "\n";
-        foreach (ChainedCommand cc in commands) {
-            output += cc.ToString();
-        }
+        return ToStringIndented(0, "");
+    }
+
+    public string ToStringIndented(int level, string character) {
+        string indentation = "";
+        for (int i = 0; i < level; i++) indentation += character;
+        string output = indentation + "---Operation---\n";
+        output += indentation + "Technology used: " + technologyUsed + "\n";
+        output += indentation + "Commands:\n";
+        if (commands.Count > 0) foreach (ChainedCommand cc in commands) output += cc.ToStringIndented(level++, " ");
+        else output += indentation + "None.";
+
         return output;
     }
+
 
 }
