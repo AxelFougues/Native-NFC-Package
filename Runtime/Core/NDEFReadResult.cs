@@ -29,7 +29,7 @@ namespace AbyssWalkerDev.NativeNFC {
             output += indentation + "Earror: " + error + "\n";
             output += indentation + "Records:\n";
             if (records.Count > 0) foreach (NDEFRecord record in records) output += record.ToStringIndented(++level, character) + "\n";
-            else output += "- None\n";
+            else output += indentation + "- None\n";
             return output;
         }
 

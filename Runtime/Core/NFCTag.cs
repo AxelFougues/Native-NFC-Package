@@ -96,14 +96,14 @@ namespace AbyssWalkerDev.NativeNFC {
             output += indentation + "Manufacturer name: " + manufacturerName + "\n";
             output += indentation + "Technologies:";
             if (technologies.Count > 0) foreach (NFC_Technology technology in technologies) output += indentation + "- " + technology + "\n";
-            else output += "- None\n";
+            else output += indentation + "- None\n";
             output += indentation + "Version data: " + versionData + "\n";
             output += indentation + "Manufacturer ID: " + manufacturerID + "\n";
             output += indentation + "Emulated: " + emulated + "\n";
             output += indentation + "Storage size: " + storageSize + "\n";
             output += indentation + "Raw contents:\n";
             if (rawContents.Count > 0) foreach (RawContent rc in rawContents) output += rc.ToStringIndented(++level, character);
-            else output += "- None\n";
+            else output += indentation + "- None\n";
             if (technologies.Contains(NFC_Technology.NDEF)) {
                 output += indentation + "NDEF type: " + ndefType + "\n";
                 output += indentation + "NDEF writable: " + ndefWritable + "\n";
@@ -166,7 +166,7 @@ namespace AbyssWalkerDev.NativeNFC {
             output += indentation += "Sector " + sector + ":" + content.Count + " Blocks\n";
             output += indentation + "Raw block contents:\n";
             if (content.Count > 0) foreach (RawBlockContent rbc in content) output += rbc.ToStringIndented(++level, " ") + "\n";
-            else output += "- None\n";
+            else output += indentation + "- None\n";
             return output;
         }
 
