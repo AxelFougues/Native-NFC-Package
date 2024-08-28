@@ -95,53 +95,53 @@ namespace AbyssWalkerDev.NativeNFC {
             output += indentation + "IC name: " + icName + "\n";
             output += indentation + "Manufacturer name: " + manufacturerName + "\n";
             output += indentation + "Technologies:";
-            if (technologies.Count > 0) foreach (NFC_Technology technology in technologies) output += indentation + "- " + technology + "\n";
+            if (technologies!= null && technologies.Count > 0) foreach (NFC_Technology technology in technologies) output += indentation + "- " + technology + "\n";
             else output += indentation + "- None\n";
             output += indentation + "Version data: " + versionData + "\n";
             output += indentation + "Manufacturer ID: " + manufacturerID + "\n";
             output += indentation + "Emulated: " + emulated + "\n";
             output += indentation + "Storage size: " + storageSize + "\n";
             output += indentation + "Raw contents:\n";
-            if (rawContents.Count > 0) foreach (RawContent rc in rawContents) output += rc.ToStringIndented(++level, character);
+            if (rawContents != null && rawContents.Count > 0) foreach (RawContent rc in rawContents) output += rc.ToStringIndented(++level, character);
             else output += indentation + "- None\n";
-            if (technologies.Contains(NFC_Technology.NDEF)) {
+
+            if (technologies == null || technologies.Contains(NFC_Technology.NDEF)) {
                 output += indentation + "NDEF type: " + ndefType + "\n";
                 output += indentation + "NDEF writable: " + ndefWritable + "\n";
                 output += indentation + "NDEF max size: " + ndefMaxSize + "\n";
-                if (ndefMessage != null) {
-                    output += ndefMessage.ToStringIndented(++level, character);
-                }
+                if (ndefMessage != null) output += ndefMessage.ToStringIndented(++level, character);
             }
-            if (technologies.Contains(NFC_Technology.NFC_A)) {
-                output += indentation + "ATQA: " + NFCUtils.bytesToHexString(atqa) + "\n";
-                output += indentation + "SAK: " + NFCUtils.bytesToHexString(atqa) + "\n";
+
+            if (technologies == null || technologies.Contains(NFC_Technology.NFC_A)) {
+                output += indentation + "ATQA: " + (atqa != null? NFCUtils.bytesToHexString(atqa) : "null") + "\n";
+                output += indentation + "SAK: " + sak + "\n";
                 output += indentation + "Transceive timeout: " + transceiveTimeout + "\n";
                 output += indentation + "Transceive max length: " + transceiveMaxLength + "\n";
             }
-            if (technologies.Contains(NFC_Technology.NFC_BARCODE)) {
-                output += indentation + "Barcode: " + NFCUtils.bytesToHexString(barcode) + "\n";
+            if (technologies == null || technologies.Contains(NFC_Technology.NFC_BARCODE)) {
+                output += indentation + "Barcode: " + (barcode != null ? NFCUtils.bytesToHexString(barcode) : null) + "\n";
                 output += indentation + "Barcode type" + barcodeType + "\n";
             }
-            if (technologies.Contains(NFC_Technology.MIFARE_ULTRALIGHT)) {
+            if (technologies == null || technologies.Contains(NFC_Technology.MIFARE_ULTRALIGHT)) {
                 output += indentation + "Mifare Ultralight type" + muType + "\n";
             }
-            if (technologies.Contains(NFC_Technology.MIFARE_CLASSIC)) {
+            if (technologies == null || technologies.Contains(NFC_Technology.MIFARE_CLASSIC)) {
                 output += indentation + "Mifare Classic size" + mcSize + "\n";
             }
-            if (technologies.Contains(NFC_Technology.NFC_B)) {
-                output += indentation + "ProtocolInfo: " + NFCUtils.bytesToHexString(protocolInfo) + "\n";
-                output += indentation + "App data: " + NFCUtils.bytesToHexString(appData) + "\n";
+            if (technologies == null || technologies.Contains(NFC_Technology.NFC_B)) {
+                output += indentation + "ProtocolInfo: " + (protocolInfo != null ? NFCUtils.bytesToHexString(protocolInfo) : null) + "\n";
+                output += indentation + "App data: " + (appData != null ? NFCUtils.bytesToHexString(appData) : null) + "\n";
             }
-            if (technologies.Contains(NFC_Technology.ISO_DEP)) {
-                output += indentation + "HI Layer Response: " + NFCUtils.bytesToHexString(hiLayerResponse) + "\n";
-                output += indentation + "Historical bytes: " + NFCUtils.bytesToHexString(historicalBytes) + "\n";
+            if (technologies == null || technologies.Contains(NFC_Technology.ISO_DEP)) {
+                output += indentation + "HI Layer Response: " + (hiLayerResponse != null ? NFCUtils.bytesToHexString(hiLayerResponse) : null) + "\n";
+                output += indentation + "Historical bytes: " + (historicalBytes != null ? NFCUtils.bytesToHexString(historicalBytes) : null) + "\n";
                 output += indentation + "Extended length Apdu support: " + isExtendedLengthApduSupported + "\n";
             }
-            if (technologies.Contains(NFC_Technology.NFC_F)) {
-                output += indentation + "Manufacturer: " + NFCUtils.bytesToHexString(manufacturer) + "\n";
-                output += indentation + "System code: " + NFCUtils.bytesToHexString(systemCode) + "\n";
+            if (technologies == null || technologies.Contains(NFC_Technology.NFC_F)) {
+                output += indentation + "Manufacturer: " + (manufacturer != null ? NFCUtils.bytesToHexString(manufacturer) : null) + "\n";
+                output += indentation + "System code: " + (systemCode != null ? NFCUtils.bytesToHexString(systemCode) : null) + "\n";
             }
-            if (technologies.Contains(NFC_Technology.NFC_V)) {
+            if (technologies == null || technologies.Contains(NFC_Technology.NFC_V)) {
                 output += indentation + "DSF ID: " + NFCUtils.byteToBinaryString(dsfId) + "\n";
                 output += indentation + "Response flags: " + NFCUtils.byteToBinaryString(responseFlags) + "\n";
             }
@@ -163,9 +163,9 @@ namespace AbyssWalkerDev.NativeNFC {
             string indentation = "";
             for (int i = 0; i < level; i++) indentation += character;
             string output = indentation + "---Raw content---\n";
-            output += indentation += "Sector " + sector + ":" + content.Count + " Blocks\n";
+            output += indentation += "Sector " + sector + ":" + (content != null? content.Count.ToString() : "0") + " Blocks\n";
             output += indentation + "Raw block contents:\n";
-            if (content.Count > 0) foreach (RawBlockContent rbc in content) output += rbc.ToStringIndented(++level, " ") + "\n";
+            if (content != null && content.Count > 0) foreach (RawBlockContent rbc in content) output += rbc.ToStringIndented(++level, " ") + "\n";
             else output += indentation + "- None\n";
             return output;
         }
