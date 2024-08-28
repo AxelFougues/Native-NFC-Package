@@ -51,7 +51,7 @@ public class Operation {
         string output = indentation + "---Operation---\n";
         output += indentation + "Technology used: " + technologyUsed + "\n";
         output += indentation + "Commands:\n";
-        if (commands.Count > 0) foreach (ChainedCommand cc in commands) output += cc.ToStringIndented(++level, " ");
+        if (commands.Count > 0) foreach (ChainedCommand cc in commands) output += cc.ToStringIndented(++level, character);
         else output += indentation + "None.";
 
         return output;
