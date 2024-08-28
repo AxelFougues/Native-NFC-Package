@@ -102,14 +102,14 @@ namespace AbyssWalkerDev.NativeNFC {
             output += indentation + "Emulated: " + emulated + "\n";
             output += indentation + "Storage size: " + storageSize + "\n";
             output += indentation + "Raw contents:";
-            if (rawContents.Count > 0) foreach (RawContent rc in rawContents) output += rc.ToStringIndented(level++, character);
+            if (rawContents.Count > 0) foreach (RawContent rc in rawContents) output += rc.ToStringIndented(++level, character);
             else output += "- None";
             if (technologies.Contains(NFC_Technology.NDEF)) {
                 output += indentation + "NDEF type: " + ndefType + "\n";
                 output += indentation + "NDEF writable: " + ndefWritable + "\n";
                 output += indentation + "NDEF max size: " + ndefMaxSize + "\n";
                 if (ndefMessage != null) {
-                    output += ndefMessage.ToStringIndented(level++, character);
+                    output += ndefMessage.ToStringIndented(++level, character);
                 }
             }
             if (technologies.Contains(NFC_Technology.NFC_A)) {
@@ -165,7 +165,7 @@ namespace AbyssWalkerDev.NativeNFC {
             string output = indentation + "---Raw content---\n";
             output += indentation += "Sector " + sector + ":" + content.Count + " Blocks\n";
             output += indentation + "Raw block contents:";
-            if (content.Count > 0) foreach (RawBlockContent rbc in content) output += rbc.ToStringIndented(level++, " ") + "\n";
+            if (content.Count > 0) foreach (RawBlockContent rbc in content) output += rbc.ToStringIndented(++level, " ") + "\n";
             else output += "- None";
             return output;
         }

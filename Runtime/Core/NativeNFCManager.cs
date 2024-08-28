@@ -364,14 +364,14 @@ namespace AbyssWalkerDev.NativeNFC {
             string indentation = "";
             for (int i = 0; i < level; i++) indentation += character;
             string output = indentation + "---Connection---\n";
-            output += indentation + (string.IsNullOrWhiteSpace(error) ? "" : "Error: " + error + "\n");
-            output += indentation + "Op. status: " + operationStatus;
-            output += indentation + "Op. duration: " + operationDuration;
+            output += indentation + "Error: " + (string.IsNullOrWhiteSpace(error) ? "None." :  error + "\n");
+            output += indentation + "Op. status: " + operationStatus + "\n";
+            output += indentation + "Op. duration: " + operationDuration + "\n";
             if (lastOperation != null) {
-                output += lastOperation.ToStringIndented(level++, character);
+                output += lastOperation.ToStringIndented(++level, character);
             }
             if (tag != null) {
-                output += tag.ToStringIndented(level++, character);
+                output += tag.ToStringIndented(++level, character);
             }
             return output;
         }
