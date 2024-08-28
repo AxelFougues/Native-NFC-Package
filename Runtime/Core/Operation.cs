@@ -52,7 +52,7 @@ public class Operation {
         output += indentation + "Technology used: " + technologyUsed + "\n";
         output += indentation + "Commands:\n";
         if (commands.Count > 0) foreach (ChainedCommand cc in commands) output += cc.ToStringIndented(++level, character);
-        else output += indentation + "None.";
+        else output += indentation + "None.\n";
 
         return output;
     }

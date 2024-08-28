@@ -96,14 +96,14 @@ namespace AbyssWalkerDev.NativeNFC {
             output += indentation + "Manufacturer name: " + manufacturerName + "\n";
             output += indentation + "Technologies:";
             if (technologies.Count > 0) foreach (NFC_Technology technology in technologies) output += indentation + "- " + technology + "\n";
-            else output += "- None";
+            else output += "- None\n";
             output += indentation + "Version data: " + versionData + "\n";
             output += indentation + "Manufacturer ID: " + manufacturerID + "\n";
             output += indentation + "Emulated: " + emulated + "\n";
             output += indentation + "Storage size: " + storageSize + "\n";
-            output += indentation + "Raw contents:";
+            output += indentation + "Raw contents:\n";
             if (rawContents.Count > 0) foreach (RawContent rc in rawContents) output += rc.ToStringIndented(++level, character);
-            else output += "- None";
+            else output += "- None\n";
             if (technologies.Contains(NFC_Technology.NDEF)) {
                 output += indentation + "NDEF type: " + ndefType + "\n";
                 output += indentation + "NDEF writable: " + ndefWritable + "\n";
@@ -164,9 +164,9 @@ namespace AbyssWalkerDev.NativeNFC {
             for (int i = 0; i < level; i++) indentation += character;
             string output = indentation + "---Raw content---\n";
             output += indentation += "Sector " + sector + ":" + content.Count + " Blocks\n";
-            output += indentation + "Raw block contents:";
+            output += indentation + "Raw block contents:\n";
             if (content.Count > 0) foreach (RawBlockContent rbc in content) output += rbc.ToStringIndented(++level, " ") + "\n";
-            else output += "- None";
+            else output += "- None\n";
             return output;
         }
 
@@ -190,9 +190,9 @@ namespace AbyssWalkerDev.NativeNFC {
                 string indentation = "";
                 for (int i = 0; i < level; i++) indentation += character;
                 string hexIndex = $"0x{blockIndex:X4}";
-                if (blocked || locked) return indentation + "Block [" + hexIndex + "] " + "locked or blocked";
-                else if (blockContent == null || blockContent.Length == 0) return indentation + "Block [" + hexIndex + "] " + "N/A";
-                else return indentation + "Block [" + hexIndex + "] " + BitConverter.ToString(blockContent) + " |" + NFCUtils.bytesToText(blockContent) + "|";
+                if (blocked || locked) return indentation + "Block [" + hexIndex + "] " + "locked or blocked\n";
+                else if (blockContent == null || blockContent.Length == 0) return indentation + "Block [" + hexIndex + "] " + "N/A\n";
+                else return indentation + "Block [" + hexIndex + "] " + BitConverter.ToString(blockContent) + " |" + NFCUtils.bytesToText(blockContent) + "|\n";
             }
 
         }
