@@ -120,13 +120,13 @@ namespace AbyssWalkerDev.NativeNFC {
             }
             if (technologies == null || technologies.Contains(NFC_Technology.NFC_BARCODE)) {
                 output += indentation + "Barcode: " + (barcode != null ? NFCUtils.bytesToHexString(barcode) : null) + "\n";
-                output += indentation + "Barcode type" + barcodeType + "\n";
+                output += indentation + "Barcode type: " + barcodeType + "\n";
             }
             if (technologies == null || technologies.Contains(NFC_Technology.MIFARE_ULTRALIGHT)) {
-                output += indentation + "Mifare Ultralight type" + muType + "\n";
+                output += indentation + "Mifare Ultralight type: " + muType + "\n";
             }
             if (technologies == null || technologies.Contains(NFC_Technology.MIFARE_CLASSIC)) {
-                output += indentation + "Mifare Classic size" + mcSize + "\n";
+                output += indentation + "Mifare Classic size: " + mcSize + "\n";
             }
             if (technologies == null || technologies.Contains(NFC_Technology.NFC_B)) {
                 output += indentation + "ProtocolInfo: " + (protocolInfo != null ? NFCUtils.bytesToHexString(protocolInfo) : null) + "\n";
